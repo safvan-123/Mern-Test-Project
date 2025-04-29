@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///home/safvan/Documents/Next%20js%20project/my-next-app/src/app/page.js"],"sourcesContent":["import Image from \"next/image\";\nimport { useEffect } from \"react\";\n\nexport default function Home() {\n  useEffect(() => {\n    fetch(\"http://localhost:8080/api\").then((res) => console.log(res));\n  }, []);\n\n  return (\n    <div>\n      <h1>Next js Landing Page</h1>\n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;AAAA;AACA;;;;AAEe,SAAS;IACtB,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,MAAM,6BAA6B,IAAI,CAAC,CAAC,MAAQ,QAAQ,GAAG,CAAC;IAC/D,GAAG,EAAE;IAEL,qBACE,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;AAGV","debugId":null}}]
+}

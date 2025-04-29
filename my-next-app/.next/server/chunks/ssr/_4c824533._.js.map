@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///home/safvan/Documents/Next%20js%20project/my-next-app/src/app/updateuser/%5Bid%5D/page.jsx"],"sourcesContent":["import { useParams } from \"next/navigation\";\nimport React from \"react\";\n\nconst page = () => {\n  const params = useParams();\n  const { id } = params;\n  return <div></div>;\n};\n\nexport default page;\n"],"names":[],"mappings":";;;;AAAA;AAAA;AACA;;;;AAEA,MAAM,OAAO;IACX,MAAM,SAAS,CAAA,GAAA,qLAAA,CAAA,YAAS,AAAD;IACvB,MAAM,EAAE,EAAE,EAAE,GAAG;IACf,qBAAO,8OAAC;;;;;AACV;uCAEe","debugId":null}}]
+}
