@@ -14,7 +14,7 @@ function Register() {
   const register = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/auth/register",
+        "https://mern-test-project-5.onrender.com/api/auth/register",
         form
       );
       localStorage.setItem("token", res.data.token);

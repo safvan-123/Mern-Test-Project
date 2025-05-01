@@ -14,7 +14,9 @@ const page = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/users/${id}`);
+        const response = await axios.get(
+          `https://mern-test-project-5.onrender.com/users/${id}`
+        );
 
         setUser(response.data);
       } catch (err) {

@@ -15,7 +15,7 @@ function Login() {
   const login = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "https://mern-test-project-5.onrender.com/api/auth/login",
         form
       );
       localStorage.setItem("token", res.data.token);
@@ -57,7 +57,7 @@ function Login() {
           Login
         </button>
         <div className="divider">OR</div>
-        <a href={"http://localhost:8080/api/auth/google"}>
+        <a href={"https://mern-test-project-5.onrender.com/api/auth/google"}>
           <button className="google-btn">Login with Google</button>
         </a>
       </div>

@@ -25,7 +25,7 @@ export default function Page() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:8080/createuser",
+        "https://mern-test-project-5.onrender.com/createuser",
         formData
       );
       console.log(res);
