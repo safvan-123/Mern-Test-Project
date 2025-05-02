@@ -1,5 +1,3 @@
-const { withNetlify } = require("@netlify/next");
-
-module.exports = withNetlify({
-  reactStrictMode: true,
-});
+export default {
+  output: "standalone",
+};

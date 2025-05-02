@@ -24,7 +24,9 @@
     "path": "/_next/image",
     "loader": "default",
     "loaderFile": "",
-    "domains": [],
+    "domains": [
+      "your-image-source.com"
+    ],
     "disableStaticImages": false,
     "minimumCacheTTL": 60,
     "formats": [
