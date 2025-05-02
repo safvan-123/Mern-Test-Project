@@ -29,7 +29,7 @@ export default function EditUserPage() {
     if (!id) return;
 
     axios
-      .get(`http://localhost:8080/users/${id}`)
+      .get(`https://mern-test-project-5.onrender.com/users/${id}`)
       .then((res) => {
         console.log("✅ User Data Fetched:", res.data);
         setFormData(res.data);
@@ -58,7 +58,7 @@ export default function EditUserPage() {
 
     try {
       const res = await axios.put(
-        `http://localhost:8080/users/${id}`,
+        `https://mern-test-project-5.onrender.com/users/${id}`,
         formData
       );
       console.log("✅ User Updated:", res.data);
@@ -78,7 +78,7 @@ export default function EditUserPage() {
   };
   const fetchUsers = (searchTerm, page) => {
     axios
-      .get(`http://localhost:8080/users`, {
+      .get(`https://mern-test-project-5.onrender.com/users`, {
         params: { searchTerm, page },
       })
       .then((res) => {
