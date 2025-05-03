@@ -15,12 +15,13 @@ const PORT = process.env.PORT || 8080;
 
 connectDB();
 
-app.use(
-  cors({
-    origin: "https://mern-test-project-5.onrender.com",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://mern-test-project-5.onrender.com",
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 
 app.use(express.json());
 app.use(
