@@ -80,15 +80,12 @@ const UsersPage = () => {
   const handleSearch = (e) => {
     const value = e.target.value;
     setsearchTerm(value);
-    router.push(
-      `https://mern-test-project-5.onrender.com/users?search=${value}&page=1`
-    );
+
+    router.push(`/users?search=${value}&page=1`);
   };
 
   const goToPage = (pageNumber) => {
-    router.push(
-      `https://mern-test-project-5.onrender.com/users?search=${search}&page=${pageNumber}`
-    );
+    router.push(`/users?search=${search}&page=${pageNumber}`);
   };
 
   return (
