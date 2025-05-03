@@ -22,21 +22,6 @@ const UsersPage = () => {
   const [sortBy, setSortBy] = useState("createdAt");
   const [order, setOrder] = useState("desc");
 
-  useEffect(() => {
-    setpages(currentPage);
-    setsearchTerm(search);
-    fetchUsers();
-  }, [
-    search,
-    currentPage,
-    role,
-    age,
-    sortBy,
-    order,
-    fetchUsers,
-    setpages,
-    setsearchTerm,
-  ]);
   const fetchUsers = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
@@ -62,6 +47,21 @@ const UsersPage = () => {
     }
   }, [search, role, age, sortBy, order, currentPage]);
 
+  useEffect(() => {
+    setpages(currentPage);
+    setsearchTerm(search);
+    fetchUsers();
+  }, [
+    search,
+    currentPage,
+    role,
+    age,
+    sortBy,
+    order,
+    fetchUsers,
+    setpages,
+    setsearchTerm,
+  ]);
   const deleteUser = async (id) => {
     try {
       const token = localStorage.getItem("token");
