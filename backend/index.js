@@ -1,4 +1,3 @@
-// index.js
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
@@ -15,13 +14,14 @@ const PORT = process.env.PORT || 8080;
 
 connectDB();
 
-// app.use(
-//   cors({
-//     origin: "https://mern-test-project-5.onrender.com",
-//     credentials: true,
-//   })
-// );
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Important for allowing cookies/session data
+  })
+);
+// app.use(cors());
 
 app.use(express.json());
 app.use(
@@ -31,8 +31,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: false, // Set to true if using HTTPS in production
+      sameSite: "lax", // Use 'strict' or 'lax' based on your use case
     },
   })
 );
@@ -43,98 +43,45 @@ app.use(passport.session());
 app.use("/api/auth", authRoutes);
 
 app.post("/createuser", (req, res) => {
-  UserModel.create(req.body)
-    .then((users) => res.json(users))
-    .catch((error) => res.json(error));
-});
-
-app.get("/users", async (req, res) => {
-  const {
-    search = "",
-    page = 1,
-    limit = 5,
-    sortBy = "createdAt",
-    order = "desc",
-    role,
-    age,
-  } = req.query;
-  const skip = (page - 1) * limit;
-  const filter = {};
-
-  if (search) filter.name = { $regex: search, $options: "i" };
-  if (role) filter.role = role;
-  if (age) filter.age = Number(age);
-
   try {
-    const total = await UserModel.countDocuments(filter);
-    const users = await UserModel.find(filter)
-      .sort({ [sortBy]: order === "asc" ? 1 : -1 })
-      .skip(skip)
-      .limit(Number(limit));
+    const { name, age, email, role, image } = req.body;
+    console.log(req.body);
 
-    res.json({
-      users,
-      total,
-      page: Number(page),
-      totalPages: Math.ceil(total / limit),
+    if (!name || !age || !email || !role || !image) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const newUser = new UserModel({
+      name,
+      age: Number(age),
+      email,
+      role,
+      image,
     });
-  } catch (err) {
-    res.status(500).json({ error: "Something went wrong" });
-  }
-});
 
-app.get("/users/:id", async (req, res) => {
-  try {
-    const user = await UserModel.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
-    res.status(200).json(user);
+    newUser
+      .save()
+      .then((user) =>
+        res.status(201).then((user) =>
+          res.status(201).json({
+            _id: user._id,
+            name: user.name,
+            age: user.age,
+            email: user.email,
+            role: user.role,
+            image: user.image,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          })
+        )
+      ) // Use status 201 for successful creation
+      .catch((error) => res.status(400).json(error));
   } catch (error) {
-    res.status(500).json({ message: "Error fetching user", error });
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-app.put("/users/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id.match(/^[0-9a-fA-F]{24}$/))
-      return res.status(400).json({ message: "Invalid User ID" });
-    const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!updatedUser)
-      return res.status(404).json({ message: "User not found" });
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error updating user", error: error.message });
-  }
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-app.delete("/users/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!id.match(/^[0-9a-fA-F]{24}$/))
-      return res.status(400).json({ message: "Invalid User ID" });
-    const deletedUser = await UserModel.findByIdAndDelete(id);
-    if (!deletedUser)
-      return res.status(404).json({ message: "User not found" });
-    res.status(200).json({ message: "User deleted successfully" });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error deleting user", error: error.message });
-  }
-});
-
-app.get("/api", (req, res) => {
-  res.json({
-    message: "Hello, Welcome to my Node.js server!",
-    peoples: ["safvan", "salman", "afsal", "kunjappu", "shareef"],
-  });
-});
-
-app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
-);

@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       ],
     },
     role: String,
+    image: {
+      type: String, // This will store the Cloudinary URL
+      required: true,
+    },
     createdAt: { type: Date, default: Date.now },
   },
   {
