@@ -41,7 +41,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/auth", authRoutes);
-
+app.get("/users", async (req, res) => {
+  try {
+    const users = await UserModel.find(); // fetch all users
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 app.post("/createuser", (req, res) => {
   try {
     const { name, age, email, role, image } = req.body;
