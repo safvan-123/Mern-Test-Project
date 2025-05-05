@@ -21,6 +21,7 @@ const UsersPage = () => {
   const [age, setAge] = useState("");
   const [sortBy, setSortBy] = useState("createdAt");
   const [order, setOrder] = useState("desc");
+  const [user, setUser] = useState(null);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -51,6 +52,29 @@ const UsersPage = () => {
     setpages(currentPage);
     setsearchTerm(search);
     fetchUsers();
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/login"); // no token, force login
+        return;
+      }
+
+      try {
+        const res = await axios.get(
+          "https://mern-test-project-5.onrender.com/api/auth/users",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setUser(res.data);
+      } catch (err) {
+        console.error(err);
+        localStorage.removeItem("token");
+        router.push("/login");
+      }
+    };
+
+    checkAuth();
   }, [
     search,
     currentPage,
@@ -61,7 +85,9 @@ const UsersPage = () => {
     fetchUsers,
     setpages,
     setsearchTerm,
+    router,
   ]);
+
   const deleteUser = async (id) => {
     try {
       const token = localStorage.getItem("token");

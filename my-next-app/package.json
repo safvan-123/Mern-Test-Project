@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "proxy": "http://localhost:5000",
+ "proxy": "https://mern-test-project-5.onrender.com",
   "dependencies": {
     "@netlify/next": "^1.4.9",
     "axios": "^1.8.4",

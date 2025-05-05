@@ -1,8 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import axios from "axios";
-import {} from "react";
-import "../styles/Login.css"; // Import the new CSS file for styling
+import "../styles/Login.css";
 import { useRouter } from "next/navigation";
 
 function Login() {
@@ -20,10 +20,9 @@ function Login() {
       );
       localStorage.setItem("token", res.data.token);
       alert("Logged in successfully!");
-      router.push("/users");
+      router.push("/users"); // navigate to users page after login
     } catch (err) {
-      console.log(err.response.data.msg);
-      alert(err.response.data.msg);
+      alert(err?.response?.data?.msg || "Login failed");
     }
   };
 
@@ -57,7 +56,7 @@ function Login() {
           Login
         </button>
         <div className="divider">OR</div>
-        <a href={"https://mern-test-project-5.onrender.com/api/auth/google"}>
+        <a href="https://mern-test-project-5.onrender.com/api/auth/google">
           <button className="google-btn">Login with Google</button>
         </a>
       </div>

@@ -1,7 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import axios from "axios";
-import "../styles/Register.css"; // Import the CSS file for styling
+import "../styles/Register.css";
 import { useRouter } from "next/navigation";
 
 function Register() {
@@ -19,9 +20,9 @@ function Register() {
       );
       localStorage.setItem("token", res.data.token);
       alert("Registered successfully!");
-      router.push("/login");
+      router.push("/users"); // push to users page after register
     } catch (err) {
-      alert(err.response.data.msg);
+      alert(err?.response?.data?.msg || "Registration failed");
     }
   };
 
@@ -65,7 +66,7 @@ function Register() {
           Register
         </button>
         <div className="divider">OR</div>
-        <a href={`${process.env.REACT_APP_API}/api/auth/google`}>
+        <a href="https://mern-test-project-5.onrender.com/api/auth/google">
           <button className="google-btn">Register with Google</button>
         </a>
       </div>

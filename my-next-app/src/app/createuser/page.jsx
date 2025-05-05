@@ -12,26 +12,115 @@ export default function Page() {
     age: "",
     email: "",
     role: "",
+    image: null,
   });
 
-  const [message, setMessage] = useState(null); // State for success/error messages
+  const [message, setMessage] = useState(null);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, files } = e.target;
+
+    if (name === "image") {
+      setFormData({ ...formData, image: files[0] }); // For file input
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
-  console.log(formData);
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log("clicked");
+
+  //   try {
+  //     let uploadedImageUrl = "";
+
+  //     // First upload image to Cloudinary
+  //     if (formData.image) {
+  //       const imageData = new FormData();
+  //       imageData.append("file", formData.image);
+  //       imageData.append("upload_preset", "unsigned_preset"); // 👉 Replace with your Cloudinary upload preset
+  //       imageData.append("cloud_name", "dmsybcze6"); // 👉 Replace with your Cloudinary cloud name
+
+  //       const cloudinaryResponse = await axios.post(
+  //         "https://api.cloudinary.com/v1_1/dmsybcze6/image/upload",
+  //         imageData
+  //       );
+
+  //       uploadedImageUrl = cloudinaryResponse.data.secure_url;
+  //     }
+
+  //     // Now send the form data + uploaded image URL to your server
+  //     const submitData = {
+  //       name: formData.name,
+  //       age: formData.age,
+  //       email: formData.email,
+  //       role: formData.role,
+  //       image: uploadedImageUrl, // Send URL
+  //     };
+  //     console.log(submitData);
+
+  //     const res = await axios.post(
+  //       "https://mern-test-project-5.onrender.com/createuser",
+  //       submitData
+  //     );
+  //     console.log(res);
+
+  //     setMessage({ type: "success", text: "User created successfully!" });
+  //     router.push("/users");
+  //   } catch (err) {
+  //     console.error(err);
+  //     setMessage({ type: "danger", text: "Failed to create user!" });
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("clicked");
+
     try {
+      let uploadedImageUrl = "";
+
+      if (formData.image) {
+        const imageData = new FormData();
+        imageData.append("file", formData.image);
+        imageData.append("upload_preset", "unsigned_preset"); // your Cloudinary preset
+        imageData.append("cloud_name", "dmsybcze6");
+
+        const cloudinaryResponse = await axios.post(
+          "https://api.cloudinary.com/v1_1/dmsybcze6/image/upload",
+          imageData
+        );
+
+        if (cloudinaryResponse.data && cloudinaryResponse.data.secure_url) {
+          uploadedImageUrl = cloudinaryResponse.data.secure_url;
+        } else {
+          throw new Error("Failed to get uploaded image URL from Cloudinary");
+        }
+      } else {
+        throw new Error("No image selected to upload");
+      }
+
+      const submitData = {
+        name: formData.name,
+        age: formData.age,
+        email: formData.email,
+        role: formData.role,
+        image: uploadedImageUrl, // Now guaranteed
+      };
+
+      console.log("Submitting data:", submitData);
+
       const res = await axios.post(
         "https://mern-test-project-5.onrender.com/createuser",
-        formData
+        submitData
       );
       console.log(res);
+
+      setMessage({ type: "success", text: "User created successfully!" });
       router.push("/users");
     } catch (err) {
-      console.log(err);
+      console.error("Error during submission:", err);
+      setMessage({ type: "danger", text: "Failed to create user!" });
     }
   };
 
@@ -77,11 +166,31 @@ export default function Page() {
                 required
               />
             </Form.Group>
-            <select value={formData?.role} onChange={handleChange} name="role">
-              <option value="">All Roles</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Role</Form.Label>
+              <Form.Select
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </Form.Select>
+            </Form.Group>
+
+            {/* New Image Upload Field */}
+            <Form.Group className="mb-3">
+              <Form.Label>Profile Image</Form.Label>
+              <Form.Control
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleChange}
+              />
+            </Form.Group>
 
             <Button variant="primary" type="submit" className="w-100">
               Create User
